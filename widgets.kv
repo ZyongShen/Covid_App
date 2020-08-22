@@ -1,0 +1,100 @@
+<ContentNavigationDrawer>:
+
+    ScrollView:
+
+        MDList: 
+
+            OneLineListItem:
+                text: "Search"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "search"
+
+            OneLineListItem:
+                text: "Results"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "results"
+
+Screen:
+
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 10
+        title: "Covid Near Me"
+        md_bg_color: 1, 0, 0, 0.4
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+    NavigationLayout:
+        x: toolbar.height
+
+        ScreenManager:
+            id: screen_manager
+
+            Screen:
+                name: "search"
+
+                MDTextFieldRound:
+                    id: input
+                    hint_text: "Town"
+                    multiline: False
+                    halign: "center"
+                    color_mode: 'accent'
+                    pos_hint: {'center_x': .5, 'center_y': 0.7}
+                    text_color: 0, 0, 0, 1
+                    md_bg_color: 1, 1, 1, 0.4
+                    
+                    
+
+                MDFillRoundFlatButton:
+                    text: "Search"
+                    text_color: 1, 1, 1, 1
+                    pos_hint: {'center_x': .5, 'center_y': .6}
+                    md_bg_color: 1, 0, 0, .4
+                    width: 300
+                    on_press: app.setResult()
+
+
+            Screen:
+                name: "results"
+
+                MDCard:
+                    orientation: "vertical"
+                    padding: "8dp"
+                    size_hint: None, None
+                    size: "280dp", "180dp"
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                    MDLabel:
+                        id: townTitle
+                        text: "Town"
+                        theme_text_color: "Secondary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                    MDSeparator:
+                        height: "2dp"
+
+                    MDLabel:
+                        id: date
+                        text: "Date: No Town Selected"
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+
+                    MDLabel:
+                        id: cases
+                        text: "Confirmed Cases: No Town Selected"
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                    MDLabel:
+                        id: caserate
+                        text: "Case Rate(Per 100,000): No Town Selected"
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                    
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
